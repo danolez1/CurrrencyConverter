@@ -118,7 +118,36 @@ public final class QueryUtils {
         return output.toString();
     }
 
-    private static List<Currency_Converter> extractFeatureFromJson(String earthquakeJSON) {
+     private static List<Currency_Converter> extractFeatureFromJson(String json) {
+
+        if (TextUtils.isEmpty(json)) {
+            return null;
+        }
+
+
+        List<Currency_Converter> currencyConverters = new ArrayList<>();
+
+        try {
+            JSONObject Object = new JSONObject(json);
+            Iterator<String> keys = jObject.keys();
+            while (keys.hasNext()) {
+                String key = keys.next();
+            	JSONObject jObject = Object.getJSONObject(key);            	
+                Iterator<String> currencies = jObject.keys();
+                while (currencies.hasNext()) {
+                        String currency = currencies.next();
+                        String value = jObject.getString(currency);
+                        Log.v("key = " + key, "value = " + value);                    
+                }
+            }
+        } catch (JSONException e) {
+            Log.e("QueryUtils", "Problem parsing the earthquake JSON results", e);
+        }
+        return currencyConverters;
+    }
+    
+    
+    /*private static List<Currency_Converter> extractFeatureFromJson(String earthquakeJSON) {
 
         if (TextUtils.isEmpty(earthquakeJSON)) {
             return null;
@@ -151,6 +180,6 @@ public final class QueryUtils {
             Log.e("QueryUtils", "Problem parsing the earthquake JSON results", e);
         }
         return currencyConverters;
-    }
+    }*/
 
 }
